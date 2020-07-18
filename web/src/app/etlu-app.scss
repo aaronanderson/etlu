@@ -1,0 +1,55 @@
+@import "@workday/canvas-colors-web/dist/sass/canvas-colors-hex.scss";
+@import "~@workday/canvas-kit-css-core/lib/mixins/type";
+
+
+:host {
+	font-family: 'Roboto', sans-serif;
+	//display: flex;
+	//flex-flow: column wrap;
+}
+
+main {
+	display: flex;
+	flex-direction: row;
+	height: 1024px;
+}
+
+#main-content {
+	flex: 1;	
+}
+
+//sidebar
+
+.listTitle {
+	@include wdc-type();
+	@include wdc-type-h4();
+	padding-left: 24px;
+}
+
+ul {
+	padding-left: 0;
+}
+
+li {
+	display: flex;
+	list-style: none;
+	align-items: end;
+	cursor: pointer;
+}
+
+li.opened {
+	padding: 15px 24px;
+	margin-left: -24px;
+	margin-right: -24px;
+}
+
+li.closed {
+	padding: 15px 20px;
+	margin-left: 0;
+	margin-right: 0;
+	justify-content: center;
+}
+
+li:hover {
+	background-color: #e8ebed;
+}

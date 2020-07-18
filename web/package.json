@@ -1,0 +1,59 @@
+{
+  "name": "@aaronanderson/etlu",
+  "version": "1.0.0",
+  "description": "ETL Universe",
+  "module": "index.js",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "clean": "rm -Rf dist",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "npm run type-check -- --watch",
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "start": "webpack-dev-server"
+  },
+  "author": "Aaron Anderson",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@aaronanderson/lwdc": "^1.0.4",
+    "@babylonjs/core": "^4.1.0",
+    "@vaadin/router": "^1.7.2",
+    "@workday/canvas-kit-css": "^4.0.0",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
+    "apollo-link-http": "^1.5.17",
+    "apollo-link-ws": "^1.0.20",
+    "graphql": "^15.3.0",
+    "graphql-tag": "^2.10.4",
+    "idb": "^5.0.4",
+    "immer": "^7.0.5",
+    "lit-element": "^2.3.1",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
+    "subscriptions-transport-ws": "^0.9.16"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.6.1",
+    "css-loader": "^3.4.2",
+    "custom-elements-hmr-polyfill": "^1.0.1",
+    "file-loader": "^6.0.0",
+    "html-loader": "^1.1.0",
+    "html-webpack-plugin": "^4.2.0",
+    "node-sass": "^4.13.1",
+    "postcss-loader": "^3.0.0",
+    "raw-loader": "^4.0.0",
+    "redux-devtools-extension": "^2.13.8",
+    "sass-loader": "^8.0.0",
+    "source-map-loader": "^0.2.4",
+    "style-loader": "^1.0.0",
+    "ts-loader": "^7.0.5",
+    "typescript": "^3.9.5",
+    "typescript-lit-html-plugin": "^0.9.0",
+    "typescript-plugin-css-modules": "^2.3.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  }
+}
