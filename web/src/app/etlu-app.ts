@@ -6,12 +6,12 @@ import { homeIcon, endpointsIcon, exportIcon, starIcon, rocketIcon, dataInputIco
 
 //import {EnvLabelElement} from '@aaaronanderson/lwdc';
 
-//import '../features/admin/admin-page';
-//import '../features/home/home-page';
 import '../features/connection/connections-page';
 import '../features/connection/connection-page';
 import '../features/project/projects-page';
 import '../features/project/project-page';
+
+import '../features/webxr/webxr-page';
 
 
 
@@ -34,7 +34,7 @@ const logo = require('../assets/etlu-logo.png').default;
 //console.log('fonts', fonts);
 //  fonts.loadWDCFonts2();
 
-const menu = [{ title: "Home", icon: homeIcon, path: "/" }, { title: "Connections", icon: endpointsIcon, path: "/connections" }, { title: "Projects", icon: projectsIcon, path: "/projects" },];
+const menu = [{ title: "Portal", icon: homeIcon, path: "/" }, { title: "Connections", icon: endpointsIcon, path: "/connections" }, { title: "Projects", icon: projectsIcon, path: "/projects" },];
 //{ title: "Template Archive", icon: dataInputIcon, path: "/archive-template" }, { title: "Template Load", icon: uploadCloudIcon, path: "/load-template" }, { title: "Transform", icon: configureIcon, path: "/transform" }, { title: "Utilities", icon: toolsIcon, path: "/utilities" }];
 
 
@@ -49,11 +49,11 @@ export class AppElement extends LitElement {
   firstUpdated() {
     console.log("first updated", this.shadowRoot);
     if (this.shadowRoot) {
-      
+
       let mainContent: HTMLElement = this.shadowRoot.getElementById('main-content') as HTMLElement;
       let router = new Router(mainContent);
       router.setRoutes([
-        { path: '/', component: 'etlu-home-page' },
+        { path: '/', component: 'etlu-webxr-page' },
         { path: '/admin', component: 'etlu-admin-page' },
 
         { path: '/connections', component: 'etlu-connections-page' },

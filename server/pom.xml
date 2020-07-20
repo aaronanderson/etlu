@@ -12,22 +12,16 @@
 	<artifactId>etlu-server</artifactId>
 	<name>ETL Universe - Server</name>
 
-	<!-- mvn clean install; mvn compile quarkus:dev -Dquarkus.profile=dev; mvn 
-		package -Pnative -Dquarkus.profile=dev -->
-	<!-- -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 -->
-
-
-	<!-- Temporary Quarkus 1.3.0.Final fix cd git/quarkus git checkout master 
-		git fetch - -all - -tags - -prune git reset - -hard git clean -f git checkout 
-		tags/1.2.0.Final add .patch to commit URL i.e. https://github.com/stuartwdouglas/quarkus/commit/ab10d2e5990354901bc745b3ac2c9d15299c8be2.patch 
-		git apply ~/Downloads/64ad71f4eadb201465de414a177d25dd00cb3cf5.patch git 
-		apply - -reject ~/Downloads/ab10d2e5990354901bc745b3ac2c9d15299c8be2.patch 
-		cd extensions/vertx-http mvn clean install -DskipTests -->
 	<properties>
 		<quarkus.version>1.6.0.Final</quarkus.version>
 		<resteasy.version>4.5.5.Final</resteasy.version>
 		<cxf.version>3.3.7</cxf.version>
 		<poi.version>4.1.2</poi.version>
+		<opencsv.version>5.2</opencsv.version>
+		<openapi4j.version>1.0.3</openapi4j.version>
+		<log4j2.version>2.13.3</log4j2.version>
+		<avro.version>1.10.0</avro.version>
+		<ignite.version>2.8.1</ignite.version>
 	</properties>
 
 	<dependencies>
@@ -88,54 +82,81 @@
 
 		<!-- Main -->
 
-
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-transports-http</artifactId>
-			<version>${cxf.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-frontend-jaxws</artifactId>
-			<version>${cxf.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jakarta.xml.ws</groupId>
-			<artifactId>jakarta.xml.ws-api</artifactId>
-			<version>2.3.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jakarta.jws</groupId>
-			<artifactId>jakarta.jws-api</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jakarta.annotation</groupId>
-			<artifactId>jakarta.annotation-api</artifactId>
-			<version>1.3.5</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.sun.xml.messaging.saaj</groupId>
-			<artifactId>saaj-impl</artifactId>
-			<version>1.5.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.glassfish.jaxb</groupId>
-			<artifactId>jaxb-runtime</artifactId>
-			<version>2.3.3</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
 			<version>${poi.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>${opencsv.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openapi4j</groupId>
+			<artifactId>openapi-parser</artifactId>
+			<version>${openapi4j.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.predic8</groupId>
+			<artifactId>soa-model-core</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.apache.avro</groupId>
+			<artifactId>avro</artifactId>
+			<version>${avro.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.apache.ignite</groupId>
+			<artifactId>ignite-core</artifactId>
+			<version>${ignite.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.ignite</groupId>
+			<artifactId>ignite-indexing</artifactId>
+			<version>${ignite.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.ignite</groupId>
+			<artifactId>ignite-log4j2</artifactId>
+			<version>${ignite.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${log4j2.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j2.version}</version>
+		</dependency>
+
+		<!-- <dependency> <groupId>org.apache.cxf</groupId> <artifactId>cxf-rt-transports-http</artifactId> 
+			<version>${cxf.version}</version> </dependency> <dependency> <groupId>org.apache.cxf</groupId> 
+			<artifactId>cxf-rt-frontend-jaxws</artifactId> <version>${cxf.version}</version> 
+			</dependency> <dependency> <groupId>jakarta.xml.ws</groupId> <artifactId>jakarta.xml.ws-api</artifactId> 
+			<version>2.3.3</version> </dependency> <dependency> <groupId>jakarta.jws</groupId> 
+			<artifactId>jakarta.jws-api</artifactId> <version>1.1.1</version> </dependency> 
+			<dependency> <groupId>jakarta.annotation</groupId> <artifactId>jakarta.annotation-api</artifactId> 
+			<version>1.3.5</version> </dependency> <dependency> <groupId>com.sun.xml.messaging.saaj</groupId> 
+			<artifactId>saaj-impl</artifactId> <version>1.5.1</version> </dependency> 
+			<dependency> <groupId>org.glassfish.jaxb</groupId> <artifactId>jaxb-runtime</artifactId> 
+			<version>2.3.3</version> </dependency> -->
+
 
 	</dependencies>
 

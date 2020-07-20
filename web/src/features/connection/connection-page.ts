@@ -19,7 +19,7 @@ import '@aaronanderson/lwdc/wc/lwdc-layout-section';
 
 import TextElement from '@aaronanderson/lwdc/wc/lwdc-text';
 import SelectElement from '@aaronanderson/lwdc/wc/lwdc-select';
-import { ButtonType } from '@aaronanderson/lwdc/wc/lwdc-button';
+import { ButtonType } from '@aaronanderson/lwdc/wc/lwdc-button'; 
 
 
 
