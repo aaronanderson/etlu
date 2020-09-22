@@ -30,7 +30,7 @@ export class WebXRPageElement extends ViewElement {
 	@query('#renderCanvas')
 	canvas?: Nullable<HTMLCanvasElement | WebGLRenderingContext>;
 
-	static get styles() {
+	static get styles() : any{
 		return [...super.styles, css`
 		
 			#renderCanvas {
@@ -47,11 +47,13 @@ export class WebXRPageElement extends ViewElement {
 	firstUpdated() {
 		this.pageTitle = 'WebXR Portal';
 		const world = new World();
-		world.registerSystem(ETLUSystem, { canvas: this.canvas });
-		world.registerSystem(OperationSystem);
+		
+		
 		world.registerComponent(Room);
 		world.registerComponent(ActiveRoom);
 		world.registerComponent(OperationRoom);
+		world.registerSystem(OperationSystem);
+		world.registerSystem(ETLUSystem, { canvas: this.canvas });
 
 		let testOperationRoom = world.createEntity();
 		testOperationRoom.addComponent(Room);

@@ -39,6 +39,7 @@
     "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
+    "@babylonjs/inspector": "^4.1.0",
     "autoprefixer": "^9.6.1",
     "css-loader": "^3.4.2",
     "custom-elements-hmr-polyfill": "^1.0.3",

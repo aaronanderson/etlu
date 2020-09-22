@@ -1,0 +1,72 @@
+scalar Date
+
+scalar DateTime
+
+schema {
+    query:Query
+    mutation: Mutation
+}
+
+type Query {
+    
+    projects(limit: Int, nextToken: String): ProjectConnection
+    
+}
+
+type Mutation {
+
+    createProject(input: ProjectInput): Project
+    
+}
+
+input ProjectInput {
+    name: String!
+}
+
+type Project {
+    id: ID!
+    name: String!    
+}
+
+type ProjectConnection {
+    projects: [Project]
+    nextToken: String
+}
+
+
+type ProjectsFile implements File {
+  created: DateTime
+  modified: DateTime
+  fileName: String
+  path: String 
+}
+
+
+type Message {
+	severity: Severity
+	summary: String	
+}
+
+enum Severity {
+  INFO
+  WARNING
+  ERROR
+}
+
+enum ChangeType {
+  ADD
+  UPDATE
+  REMOVE
+  NONE
+}
+
+
+interface File {
+  created: DateTime
+  modified: DateTime
+  fileName: String
+  path: String
+}
+
+
+
