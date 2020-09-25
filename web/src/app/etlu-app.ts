@@ -26,11 +26,12 @@ import '@aaronanderson/lwdc/wc/lwdc-modal';
 import { ButtonType } from '@aaronanderson/lwdc/wc/lwdc-button';
 import ModalElement from '@aaronanderson/lwdc/wc/lwdc-modal';
 
+import styles from './etlu-app-style.scss';
 
-const style = css(<any>[require('./etlu-app.scss').default]);
+console.log('styles: ',styles);
+const style = css(<any>[styles]);
+console.log('style: ',style);
 
-
-const logo = require('../assets/etlu-logo.png').default;
 //console.log('fonts', fonts);
 //  fonts.loadWDCFonts2();
 
@@ -77,18 +78,18 @@ export class AppElement extends LitElement {
   render() {
     console.log('render');
     return html`
-     
+
       <lwdc-fonts></lwdc-fonts>
-         
-      
-      <lwdc-header imgURL="${logo}" title="Extract Transform Load Universe"></lwdc-header>
+
+
+      <lwdc-header imgURL="/assets/etlu-logo.png" title="Extract Transform Load Universe"></lwdc-header>
       <main>
         <lwdc-side-panel @lwdc-side-panel-toggle=${(e: CustomEvent) => { this.opened = e.detail.opened; }} style="--lwdc-sidebar-height: 50vh" >${this.sidePanelContent}</lwdc-side-panel>
         <section class="main-content" id="main-content"></section>
       </main>
-      
 
-   
+
+
     `;
   }
 
@@ -103,10 +104,10 @@ export class AppElement extends LitElement {
       ${menu.map((i: any) => {
       return html`
           <li class="${itemClass}" @click=${(e: Event) => Router.go(i.path)}>
-            <lwdc-tooltip message="${i.title}">	
+            <lwdc-tooltip message="${i.title}">
               <lwdc-icon .icon=${i.icon}></lwdc-icon>
             </lwdc-tooltip>
-            ${this.opened ? html`<span class="listTitle">${i.title}</span>` : undefined}				    
+            ${this.opened ? html`<span class="listTitle">${i.title}</span>` : undefined}
 			    </li>
         `;
     })}

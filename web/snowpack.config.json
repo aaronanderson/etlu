@@ -1,0 +1,17 @@
+{  
+  "mount": {
+    "src": "/"
+  },
+  "installOptions": {
+    "sourceMap": true
+  },
+  "buildOptions": {
+    "sourceMaps": true
+  },
+  "plugins": [
+    [
+      "./lit-scss-plugin.js",
+      {}
+    ]
+  ]
+}

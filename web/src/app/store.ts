@@ -1,7 +1,7 @@
 import { Store, Unsubscribe, AnyAction } from 'redux';
 import { combineReducers } from 'redux'
 import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import devTool from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
 import connection from '../features/connection/connection-reducer';
@@ -48,7 +48,7 @@ export const store = configureStore();
 
 export default function configureStore() {
 	console.log('store created');
-	const store = createStore(rootReducer, composeWithDevTools(
+	const store = createStore(rootReducer, devTool.composeWithDevTools(
 		applyMiddleware(thunk)
 	));
 	// if (process.env.NODE_ENV !== 'production' && (module as any).hot) {

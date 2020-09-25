@@ -26,6 +26,35 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<dependencies>
+
+		<dependency>
+			<groupId>io.github.aaronanderson</groupId>
+			<artifactId>etlu-runtime</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.json</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>jakarta.enterprise</groupId>
+			<artifactId>jakarta.enterprise.cdi-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+
 
 	<modules>
 		<module>delimited</module>
@@ -33,5 +62,5 @@
 		<module>rs</module>
 		<module>ws</module>
 	</modules>
-	
+
 </project>

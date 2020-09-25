@@ -7,27 +7,25 @@
     "dist/"
   ],
   "scripts": {
-    "clean": "rm -Rf dist",
+    "clean": "rm -Rf build",
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
-    "build": "webpack",
-    "watch": "webpack --watch",
-    "start": "webpack-dev-server"
+    "start": "snowpack dev",
+    "build": "snowpack build"
   },
   "author": "Aaron Anderson",
   "license": "Apache-2.0",
   "dependencies": {
-    "@aaronanderson/lwdc": "^1.0.4",
+    "@aaronanderson/lwdc": "^1.0.5",
     "@babylonjs/core": "^4.1.0",
     "@babylonjs/loaders": "^4.1.0",
     "@babylonjs/materials": "^4.1.0",
     "@vaadin/router": "^1.7.2",
-    "@workday/canvas-kit-css": "^4.0.0",
+    "@workday/canvas-kit-css": "^4.2.0",
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",
     "apollo-link-http": "^1.5.17",
     "apollo-link-ws": "^1.0.20",
-    "babylonjs": "^4.1.0",
     "ecsy": "^0.4.1",
     "graphql": "^15.3.0",
     "graphql-tag": "^2.10.4",
@@ -40,25 +38,10 @@
   },
   "devDependencies": {
     "@babylonjs/inspector": "^4.1.0",
-    "autoprefixer": "^9.6.1",
-    "css-loader": "^3.4.2",
-    "custom-elements-hmr-polyfill": "^1.0.3",
-    "file-loader": "^6.0.0",
-    "html-loader": "^1.1.0",
-    "html-webpack-plugin": "^4.2.0",
-    "node-sass": "^4.13.1",
-    "postcss-loader": "^3.0.0",
-    "raw-loader": "^4.0.0",
     "redux-devtools-extension": "^2.13.8",
-    "sass-loader": "^8.0.0",
-    "source-map-loader": "^0.2.4",
-    "style-loader": "^1.0.0",
-    "ts-loader": "^7.0.5",
-    "typescript": "^3.9.5",
-    "typescript-lit-html-plugin": "^0.9.0",
-    "typescript-plugin-css-modules": "^2.3.0",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "sass": "^1.26.10",
+    "snowpack": "^2.11.1 ",
+    "typescript": "^4.0.3",
+    "typescript-lit-html-plugin": "^0.9.0"
   }
 }
