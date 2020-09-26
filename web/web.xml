@@ -13,7 +13,7 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>dist</directory>
+			<directory>build</directory>
 			<outputDirectory>/</outputDirectory>
 		</fileSet>
 	</fileSets>

@@ -12,7 +12,6 @@
 	<artifactId>etlu-ws</artifactId>
 	<name>ETL Universe - Module - Web Service</name>
 
-
 	<dependencies>
 
 		<dependency>
@@ -20,6 +19,14 @@
 			<artifactId>soa-model-core</artifactId>
 		</dependency>
 
+	<!-- groovy 2.4 is not compatible with JDK modules -->
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy</artifactId>
+			<version>2.5.13</version>
+		</dependency>
+
+		
 	</dependencies>
 
 

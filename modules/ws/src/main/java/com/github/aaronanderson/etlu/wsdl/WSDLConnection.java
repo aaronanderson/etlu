@@ -4,6 +4,7 @@ import com.predic8.wsdl.Definitions;
 import com.predic8.wsdl.Operation;
 import com.predic8.wsdl.WSDLParser;
 
+//mvn exec:java -Dexec.mainClass="com.github.aaronanderson.etlu.wsdl.WSDLConnection"
 public class WSDLConnection {
 
 	public static void main(String[] args) {
