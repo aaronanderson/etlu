@@ -58,9 +58,8 @@
 
 	<modules>
 		<module>bom</module>
-		<module>runtime</module>		
+		<module>runtime</module>
 		<module>modules</module>
-		<module>web</module>
 		<module>xr-server</module>
 	</modules>
 
@@ -93,6 +92,76 @@
 				<version>2.22.2</version>
 			</plugin>
 		</plugins>
+
+
+		<pluginManagement>
+			<plugins>
+
+		
+				<plugin>
+					<groupId>com.github.eirslett</groupId>
+					<artifactId>frontend-maven-plugin</artifactId>
+					<version>1.9.1</version>
+					<configuration>
+						<nodeVersion>v13.11.0</nodeVersion>
+						<yarnVersion>v1.22.4</yarnVersion>
+					</configuration>
+					<executions>
+						<execution>
+							<id>install node and yarn</id>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>install-node-and-yarn</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>yarn install</id>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>yarn</goal>
+							</goals>
+							<configuration>
+								<arguments>install --frozen-lockfile</arguments>
+							</configuration>
+						</execution>
+						<execution>
+							<id>yarn build</id>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>yarn</goal>
+							</goals>
+							<configuration>
+								<arguments>build</arguments>
+							</configuration>
+						</execution>
+						<!-- yarn pack to the target directory doesn't work -->
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>create-distribution</id>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>target/classes</outputDirectory>
+								<attach>false</attach>
+								<finalName>web</finalName>
+								<appendAssemblyId>true</appendAssemblyId>
+								<descriptors>
+									<descriptor>web.xml</descriptor>
+								</descriptors>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 
 	</build>
 

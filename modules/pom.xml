@@ -57,10 +57,13 @@
 
 
 	<modules>
+		<module>core</module>
 		<module>delimited</module>
 		<module>excel</module>
 		<module>rs</module>
 		<module>ws</module>
 	</modules>
+
+
 
 </project>

@@ -18,10 +18,10 @@ import { ETLUStore } from '../../app/store';
 import { Nullable } from '@babylonjs/core/types';
 import { EnvironmentHelper } from '@babylonjs/core/Helpers/environmentHelper';
 import { World } from 'ecsy';
-import { ETLUSystem } from './systems/ETLUSystem';
-import { OperationSystem } from './systems/OperationSystem';
-import { OperationRoom } from './components/OperationRoom';
-import { Room, ActiveRoom } from './components/Room';
+// import { ETLUSystem } from './systems/ETLUSystem';
+// import { OperationSystem } from './systems/OperationSystem';
+// import { OperationRoom } from './components/OperationRoom';
+// import { Room, ActiveRoom } from './components/Room';
 
 
 @customElement('etlu-webxr-page')
@@ -32,13 +32,13 @@ export class WebXRPageElement extends ViewElement {
 
 	static get styles() : any{
 		return [...super.styles, css`
-		
+
 			#renderCanvas {
                 width: 100%;
                 height: 100%;
                 touch-action: none;
 			}
-		
+
 		`];
 	}
 
@@ -47,18 +47,18 @@ export class WebXRPageElement extends ViewElement {
 	firstUpdated() {
 		this.pageTitle = 'WebXR Portal';
 		const world = new World();
-		
-		
-		world.registerComponent(Room);
-		world.registerComponent(ActiveRoom);
-		world.registerComponent(OperationRoom);
-		world.registerSystem(OperationSystem);
-		world.registerSystem(ETLUSystem, { canvas: this.canvas });
 
-		let testOperationRoom = world.createEntity();
-		testOperationRoom.addComponent(Room);
-		testOperationRoom.addComponent(ActiveRoom);
-		testOperationRoom.addComponent(OperationRoom);
+
+		// world.registerComponent(Room);
+		// world.registerComponent(ActiveRoom);
+		// world.registerComponent(OperationRoom);
+		// world.registerSystem(OperationSystem);
+		// world.registerSystem(ETLUSystem, { canvas: this.canvas });
+		//
+		// let testOperationRoom = world.createEntity();
+		// testOperationRoom.addComponent(Room);
+		// testOperationRoom.addComponent(ActiveRoom);
+		// testOperationRoom.addComponent(OperationRoom);
 	}
 
 	render() {
@@ -67,7 +67,7 @@ export class WebXRPageElement extends ViewElement {
 			${this.pageTitleTemplate}
 
 			<section class="etlu-main">
-				 <canvas id="renderCanvas"></canvas>				
+				 <canvas id="renderCanvas"></canvas>
 			</section>
     `;
 	}

@@ -5,10 +5,10 @@ target/
 yarn-error.log
 yarn.lock
 package-lock.json
-node_modules
-web_modules
-node
-dist
+node_modules/
+web_modules/
+node/
+dist/
 storybook-static
 xr-server/src/main/resources/META-INF/resources
 web/build

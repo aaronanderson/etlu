@@ -25,7 +25,7 @@
 	</dependencyManagement>
 
 	<properties>
-		<quarkus.version>1.6.0.Final</quarkus.version>
+		<quarkus.version>1.8.1.Final</quarkus.version>
 	</properties>
 
 	<dependencies>
@@ -35,6 +35,12 @@
 			<artifactId>etlu-runtime</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>io.github.aaronanderson</groupId>
+			<artifactId>etlu-core</artifactId>
+			<version>${project.version}</version>
+		</dependency> 
 
 		<dependency>
 			<groupId>io.github.aaronanderson</groupId>
@@ -58,15 +64,6 @@
 			<groupId>io.github.aaronanderson</groupId>
 			<artifactId>etlu-ws</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.github.aaronanderson</groupId>
-			<artifactId>etlu-web</artifactId>
-			<version>${project.version}</version>
-			<type>zip</type>
-			<classifier>web</classifier>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -113,34 +110,20 @@
 
 	<build>
 
+
+
 		<plugins>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>unpack-ui</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>io.github.aaronanderson</groupId>
-									<artifactId>etlu-web</artifactId>
-									<version>${project.version}</version>
-									<classifier>web</classifier>
-									<type>zip</type>
-									<overWrite>false</overWrite>
-									<outputDirectory>src/main/resources/META-INF/resources</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+			</plugin>
+
 
 			<plugin>
 				<groupId>io.quarkus</groupId>
@@ -162,19 +145,7 @@
 					</systemProperties>
 				</configuration>
 			</plugin>
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>src/main/resources/META-INF/resources</directory>
-							<includes>
-								<include>**/*</include>
-							</includes>
-						</fileset>
-					</filesets>
-				</configuration>
-			</plugin>
+			
 		</plugins>
 
 

@@ -1,4 +1,4 @@
-package com.github.aaronanderson.etlu.rs.openapi;
+package com.github.aaronanderson.etlu.rs;
 
 import java.net.URL;
 import java.util.Map.Entry;

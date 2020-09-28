@@ -1,4 +1,4 @@
-package com.github.aaronanderson.etlu.rs.openapi;
+package com.github.aaronanderson.etlu.rs;
 
 import javax.enterprise.context.ApplicationScoped;
 

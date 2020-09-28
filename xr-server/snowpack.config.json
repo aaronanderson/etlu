@@ -1,6 +1,9 @@
-{  
-  "mount": {
-    "src": "/"
+{
+   "mount": {
+    "src/main/web": "/"
+  },
+  "devOptions": {
+    "out": "./target/web-build"
   },
   "installOptions": {
     "sourceMap": true

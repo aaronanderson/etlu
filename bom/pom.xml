@@ -13,7 +13,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<quarkus.version>1.6.0.Final</quarkus.version>
+		<quarkus.version>1.8.1.Final</quarkus.version>
 		<resteasy.version>4.5.5.Final</resteasy.version>
 		<poi.version>4.1.2</poi.version>
 		<opencsv.version>5.2</opencsv.version>

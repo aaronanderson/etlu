@@ -1,13 +1,9 @@
 {
   "name": "@aaronanderson/etlu",
   "version": "1.0.0",
-  "description": "ETL Universe",
+  "description": "ETL Universe XR Server",
   "module": "index.js",
-  "files": [
-    "dist/"
-  ],
   "scripts": {
-    "clean": "rm -Rf build",
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
     "start": "snowpack dev",

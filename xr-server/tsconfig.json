@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "src/main/web",
     "moduleResolution": "node",
     "module": "esnext",
     "target": "esnext",
@@ -15,17 +16,15 @@
     "jsxFactory": "h",
 
     "declaration": true,
-    "outDir": "dist"
+    "outDir": "build"
 
   },
 
-  "include": ["src"],
+  "include": ["src/main/web"],
 
-  "exclude": ["node_modules", "web_modules"],
+  "exclude": ["node_modules", "web_modules"]
 
-  "plugins": [{
-    "name": "typescript-lit-html-plugin"
-  }]
+ 
 
 
 }
