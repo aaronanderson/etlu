@@ -16,7 +16,7 @@
     "jsxFactory": "h",
 
     "declaration": true,
-    "outDir": "build"
+    "outDir": "target/web-build"
 
   },
 
@@ -24,7 +24,7 @@
 
   "exclude": ["node_modules", "web_modules"]
 
- 
+
 
 
 }

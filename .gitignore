@@ -11,5 +11,6 @@ node/
 dist/
 storybook-static
 xr-server/src/main/resources/META-INF/resources
+xr-server/etlu
 web/build
 .vscode

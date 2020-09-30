@@ -15,10 +15,12 @@ import { ActiveRoom, Room } from '../components/Room';
 import { EnvironmentHelper } from '@babylonjs/core/Helpers/environmentHelper';
 import { WebXRDefaultExperience } from '@babylonjs/core/XR/webXRDefaultExperience';
 
+import "@babylonjs/loaders/glTF";
+import "@babylonjs/core/Helpers/sceneHelpers";
 
 
-//import "@babylonjs/core/Debug/debugLayer"; 
-//import "@babylonjs/inspector"; 
+//import "@babylonjs/core/Debug/debugLayer";
+//import "@babylonjs/inspector";
 
 
 
@@ -109,12 +111,12 @@ export class ETLUSystem extends System {
           console.log("active room set", room, room.assetContainer);
           this.activeRoom = room;
           if (this.activeRoom.assetContainer) {
-            this.activeRoom.assetContainer.addAllToScene();   
+            this.activeRoom.assetContainer.addAllToScene();
               // This targets the camera to scene origin
               if (this.camera){
                 this.camera.position = new Vector3(0, 5, -10);
                 this.camera.setTarget(Vector3.Zero());
-              }        
+              }
             console.log("scene updated with active room");
           }
         }

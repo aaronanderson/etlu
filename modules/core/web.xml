@@ -13,8 +13,8 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>target/web-build/core</directory>
-			<outputDirectory>/core</outputDirectory>			
+			<directory>target/web-build</directory>
+			<outputDirectory>/</outputDirectory>			
 		</fileSet>
 		
 	</fileSets>

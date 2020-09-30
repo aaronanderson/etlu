@@ -1,2 +1,2 @@
-import './app/etlu-modules';
+import './etlu-modules';
 import './app/etlu-app';

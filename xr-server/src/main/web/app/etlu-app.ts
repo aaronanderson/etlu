@@ -28,9 +28,7 @@ import ModalElement from '@aaronanderson/lwdc/wc/lwdc-modal';
 
 import styles from './etlu-app-style.scss';
 
-console.log('styles: ',styles);
 const style = css(<any>[styles]);
-console.log('style: ',style);
 
 //console.log('fonts', fonts);
 //  fonts.loadWDCFonts2();
@@ -48,7 +46,6 @@ export class AppElement extends LitElement {
 
 
   firstUpdated() {
-    console.log("first updated", this.shadowRoot);
     if (this.shadowRoot) {
 
       let mainContent: HTMLElement = this.shadowRoot.getElementById('main-content') as HTMLElement;
@@ -76,7 +73,6 @@ export class AppElement extends LitElement {
 
 
   render() {
-    console.log('render');
     return html`
 
       <lwdc-fonts></lwdc-fonts>

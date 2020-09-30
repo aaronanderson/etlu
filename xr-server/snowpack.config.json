@@ -6,6 +6,8 @@
     "out": "./target/web-build"
   },
   "installOptions": {
+    "installTypes": true,
+    "treeshake": false,
     "sourceMap": true
   },
   "buildOptions": {

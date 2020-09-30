@@ -1,15 +1,16 @@
 {
-   "mount": {
+  "mount": {
     "src/main/web": "/core"
   },
   "devOptions": {
     "out": "./target/web-build"
   },
   "installOptions": {
+    "installTypes": true,
+    "treeshake": false,
     "sourceMap": true
   },
   "buildOptions": {
     "sourceMaps": true
   }
-  
 }
