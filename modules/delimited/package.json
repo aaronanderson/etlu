@@ -1,7 +1,7 @@
 {
-  "name": "@aaronanderson/etlu-core",
+  "name": "@aaronanderson/etlu-delimited",
   "version": "1.0.0",
-  "description": "ETL Module - Core",
+  "description": "ETL Module - Delimited",
   "module": "index.js",
   "scripts": {
     "clean": "rm -Rf target/web-build",
@@ -12,8 +12,8 @@
   "author": "Aaron Anderson",
   "license": "Apache-2.0",
   "dependencies": {
+    "@aaronanderson/etlu-core": "file:./../core",
     "@babylonjs/core": "^4.1.0",
-    "@babylonjs/gui": "^4.1.0",
     "@babylonjs/loaders": "^4.1.0",
     "@babylonjs/materials": "^4.1.0",
     "ecsy": "^0.4.1"

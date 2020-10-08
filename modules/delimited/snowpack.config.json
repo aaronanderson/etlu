@@ -1,0 +1,16 @@
+{
+  "mount": {
+    "src/main/web": "/delimited"
+  },
+  "devOptions": {
+    "out": "./target/web-build"
+  },
+  "installOptions": {
+    "installTypes": true,
+    "treeshake": false,
+    "sourceMap": true
+  },
+  "buildOptions": {
+    "sourceMaps": true
+  }
+}

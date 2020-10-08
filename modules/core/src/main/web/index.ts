@@ -4,6 +4,11 @@ import { OperationSystem } from './systems/OperationSystem';
 import { OperationRoom } from './components/OperationRoom';
 import { Room, ActiveRoom } from './components/Room';
 
+//load MeshWriter at top level so it is loaded once and available everywhere.
+import * as BABYLON from '@babylonjs/core/Legacy/legacy';
+(<any>window).BABYLON = BABYLON;
+declare const MeshWriter: any;
+import './components/meshwriter';
 
 
 console.log("Core Module Instanciated");

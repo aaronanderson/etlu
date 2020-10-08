@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -23,9 +24,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.json.JsonPatchBuilder;
 import javax.json.JsonValue;
 import javax.json.JsonWriter;
@@ -110,8 +109,8 @@ public class WebServer {
 					jsonWriter.writeObject(snowPackJson);
 				}
 
-				Files.copy(basePath.resolve("lit-scss-plugin.js"), devPath.resolve("lit-scss-plugin.js"));
-				
+				Files.copy(basePath.resolve("lit-scss-plugin.js"), devPath.resolve("lit-scss-plugin.js"),
+						StandardCopyOption.REPLACE_EXISTING);
 
 				JsonObject packageJson = Json.createReader(Files.newBufferedReader(basePath.resolve("package.json")))
 						.readObject();
@@ -121,7 +120,7 @@ public class WebServer {
 					dependencies.add(dependency);
 				}
 
-				//Copy over the module source files
+				// Copy over the module source files
 				LOG.infof("Starting dev mode synchronization of web files to %s", devPath.toAbsolutePath());
 				Map<Path, Path> syncPaths = new HashMap<>();
 				Path targetServerPath = devPath.resolve("src");
@@ -145,8 +144,9 @@ public class WebServer {
 							for (Entry<String, JsonValue> dependency : modulePackageJson.getJsonObject("dependencies")
 									.entrySet()) {
 								if (!dependencies.contains(dependency.getKey())) {
-									dependencyPatchBuilder = dependencyPatchBuilder
-											.add("/dependencies/" + dependency.getKey().replaceAll("/", "~1"), dependency.getValue());
+									dependencyPatchBuilder = dependencyPatchBuilder.add(
+											"/dependencies/" + dependency.getKey().replaceAll("/", "~1"),
+											dependency.getValue());
 									dependencies.add(dependency.getKey());
 								}
 							}
@@ -157,8 +157,8 @@ public class WebServer {
 
 					}
 				}
-				
-				//write the updated package dependencies and module import files
+
+				// write the updated package dependencies and module import files
 				packageJson = dependencyPatchBuilder.build().apply(packageJson);
 				try (JsonWriter jsonWriter = writerFactory
 						.createWriter(Files.newBufferedWriter(devPath.resolve("package.json"),
@@ -224,50 +224,63 @@ public class WebServer {
 
 	private void syncDirectories(Map<Path, Path> syncPaths) throws IOException {
 		Runnable task = () -> {
-			Map<WatchKey, Path> watchKeyPaths = new HashMap<>();
+			Map<WatchKey, Path[]> watchKeyPaths = new HashMap<>();
 			try (final WatchService watchService = FileSystems.getDefault().newWatchService()) {
 				for (Map.Entry<Path, Path> syncPath : syncPaths.entrySet()) {
-					final WatchKey watchKey = syncPath.getKey().register(watchService,
-							StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_MODIFY,
-							StandardWatchEventKinds.ENTRY_DELETE);
-					watchKeyPaths.put(watchKey, syncPath.getKey());
-
+					Files.walk(syncPath.getKey()).filter(Files::isDirectory).forEach((p) -> {
+						try {
+							Path[] watchEntry = new Path[2];
+							watchEntry[0] = p;
+							WatchKey watchKey;
+							Path relativeSyncPath = syncPath.getKey().relativize(p);
+							watchEntry[1] = syncPath.getValue().resolve(relativeSyncPath);
+							watchKey = p.register(watchService, StandardWatchEventKinds.ENTRY_CREATE,
+									StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_DELETE);
+							watchKeyPaths.put(watchKey, watchEntry);
+						} catch (IOException e) {
+							LOG.error("", e);
+						}
+					});
 				}
 
 				while (true) {
 					final WatchKey wk = watchService.take();
-					Path baseSourcePath = watchKeyPaths.get(wk);
-					Path baseTargetPath = syncPaths.get(baseSourcePath);
+					Path[] watchEntry = watchKeyPaths.get(wk);
+					Path baseSourcePath = watchEntry[0];
+					Path baseTargetPath = watchEntry[1];
 					for (WatchEvent<?> event : wk.pollEvents()) {
-						// we only register "ENTRY_MODIFY" so the context is always a Path.
-						final Path sourcePath = baseSourcePath.resolve((Path) event.context());
-						final Path targetPath = baseTargetPath.resolve((Path) event.context());
+						try {
+							// we only register "ENTRY_MODIFY" so the context is always a Path.
+							final Path sourcePath = baseSourcePath.resolve((Path) event.context());
+							final Path targetPath = baseTargetPath.resolve((Path) event.context());
 
-						if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE) {
-							if (Files.isDirectory(sourcePath)) {
-								Files.createDirectory(targetPath);
-								LOG.infof("Added directory %s", targetPath.toAbsolutePath());
-							} else {
-								Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-								LOG.infof("Added file %s", targetPath.toAbsolutePath());
+							if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE) {
+								if (Files.isDirectory(sourcePath)) {
+									Files.createDirectory(targetPath);
+									LOG.infof("Added directory %s", targetPath.toAbsolutePath());
+								} else {
+									Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+									LOG.infof("Added file %s", targetPath.toAbsolutePath());
+								}
+							} else if (event.kind() == StandardWatchEventKinds.ENTRY_MODIFY) {
+								if (Files.isDirectory(sourcePath)) {
+									LOG.infof("Directory modfiy skipped %s", targetPath.toAbsolutePath());
+								} else {
+									Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+									LOG.infof("Modified file %s", targetPath.toAbsolutePath());
+								}
+							} else if (event.kind() == StandardWatchEventKinds.ENTRY_DELETE) {
+								if (Files.isDirectory(targetPath)) {
+									Files.deleteIfExists(targetPath);
+									LOG.infof("Deleted directory %s", targetPath.toAbsolutePath());
+								} else {
+									Files.deleteIfExists(targetPath);
+									LOG.infof("Deleted file %s", targetPath.toAbsolutePath());
+								}
 							}
-						} else if (event.kind() == StandardWatchEventKinds.ENTRY_MODIFY) {
-							if (Files.isDirectory(sourcePath)) {
-								LOG.infof("Directory modfiy skipped %s", targetPath.toAbsolutePath());
-							} else {
-								Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-								LOG.infof("Modified file %s", targetPath.toAbsolutePath());
-							}
-						} else if (event.kind() == StandardWatchEventKinds.ENTRY_DELETE) {
-							if (Files.isDirectory(targetPath)) {
-								Files.deleteIfExists(targetPath);
-								LOG.infof("Deleted directory %s", targetPath.toAbsolutePath());
-							} else {
-								Files.deleteIfExists(targetPath);
-								LOG.infof("Deleted file %s", targetPath.toAbsolutePath());
-							}
+						} catch (NoSuchFileException e) {
+							// ignore, it may be a temp file being deleted
 						}
-
 					}
 					// reset the key
 					boolean valid = wk.reset();
@@ -276,13 +289,14 @@ public class WebServer {
 					}
 				}
 			} catch (InterruptedException ie) {
-
+				LOG.warn("", ie);
 			} catch (IOException e) {
 				LOG.error("", e);
 			}
 
 		};
 		Thread thread = new Thread(task, "ETLU Dev Server File Sync");
+		thread.setDaemon(true);
 		thread.start();
 
 	}
