@@ -1,16 +1,19 @@
 package com.github.aaronanderson.etlu.runtime.graphql;
 
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Map;
-import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Event;
 import javax.enterprise.inject.Produces;
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
+import javax.inject.Inject;
+
+import com.github.aaronanderson.etlu.runtime.modules.ModuleManager;
+import com.github.aaronanderson.etlu.runtime.spi.GraphQLWire;
+import com.github.aaronanderson.etlu.runtime.spi.ModuleInstance;
 
 import graphql.GraphQL;
 import graphql.language.StringValue;
@@ -21,7 +24,6 @@ import graphql.schema.CoercingSerializeException;
 import graphql.schema.DataFetcher;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
-import graphql.schema.TypeResolver;
 import graphql.schema.idl.FieldWiringEnvironment;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.RuntimeWiring.Builder;
@@ -33,40 +35,27 @@ import graphql.schema.idl.WiringFactory;
 @ApplicationScoped
 public class GraphQLManager {
 
+	private static final Logger LOG = Logger.getLogger(GraphQLManager.class.getName());
+
 	private GraphQL graphQL;
 
-	// TODO switch to ignite cache as source
-	private JsonArrayBuilder projects = Json.createArrayBuilder();
+	@Inject
+	ModuleManager moduleManager;
+
+	@Inject
+	@GraphQLWire
+	Event<Builder> runtimeWireBuilder;
 
 	@PostConstruct
 	public void init() {
-		projects.add(Json.createObjectBuilder().add("name", "ETLU Test").add("id", newID()));
-		configure();
 
-	}
-
-	@PreDestroy
-	public void destroy() {
-		projects = null;
-	}
-
-	@Produces
-	public GraphQL graphQL() {
-		return graphQL;
-	}
-
-	private static String newID() {
-		return UUID.randomUUID().toString().replaceAll("-", "");
-	}
-
-	public void configure() {
 		TypeDefinitionRegistry typeRegistry = new TypeDefinitionRegistry();
 		SchemaParser schemaParser = new SchemaParser();
 		// TODO allow graphql plugin injectiion. Tricky, because GraphQL is also
 		// produced. Perhaps try Optional?
-		TypeDefinitionRegistry typeDefinitionRegistry = schemaParser.parse(new InputStreamReader(
-				Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/etlu-app.graphql")));
-		typeRegistry.merge(typeDefinitionRegistry);
+//		TypeDefinitionRegistry typeDefinitionRegistry = schemaParser.parse(new InputStreamReader(
+//				Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/etlu-app.graphql")));
+		// typeRegistry.merge(typeDefinitionRegistry);
 
 		Builder runtimeWiringBuilder = RuntimeWiring.newRuntimeWiring();
 
@@ -80,14 +69,28 @@ public class GraphQLManager {
 			}
 		});
 
-		runtimeWiringBuilder.type("Query", typeWiring -> typeWiring.dataFetcher("projects", projects()));
-
-		runtimeWiringBuilder.type("Mutation", typeWiring -> typeWiring.dataFetcher("createProject", createProject()));
-
-		runtimeWiringBuilder.type("File", typeWiring -> typeWiring.typeResolver(fileType()));
-
 		runtimeWiringBuilder.scalar(DATE);
 		runtimeWiringBuilder.scalar(DATETIME);
+
+		runtimeWireBuilder.fire(runtimeWiringBuilder);
+
+		for (ModuleInstance<?> module : moduleManager.getModules()) {
+			com.github.aaronanderson.etlu.runtime.spi.GraphQLSchema graphQLSchema = module.getModule().getClass()
+					.getAnnotation(com.github.aaronanderson.etlu.runtime.spi.GraphQLSchema.class);
+			if (graphQLSchema != null) {
+				InputStream is = module.getClass().getResourceAsStream(graphQLSchema.value());
+				if (is != null) {
+					TypeDefinitionRegistry typeDefinitionRegistry = schemaParser.parse(new InputStreamReader(is));
+					typeRegistry.merge(typeDefinitionRegistry);
+					// invokeWireBuilder(module, runtimeWiringBuilder);
+
+				} else {
+					LOG.log(Level.SEVERE, String.format("Module %s GraphQL schema path %s is unavailable",
+							module.getPath(), graphQLSchema.value()));
+				}
+			}
+
+		}
 
 		RuntimeWiring runtimeWiring = runtimeWiringBuilder.build();
 
@@ -95,29 +98,29 @@ public class GraphQLManager {
 		GraphQLSchema graphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
 
 		graphQL = GraphQL.newGraphQL(graphQLSchema).build();
+
 	}
 
-	private DataFetcher<JsonObject> projects() {
-		return (e) -> {
-			return Json.createObjectBuilder().add("projects", projects).add("nextToken", "AAAAAA").build();
-		};
+	@Produces
+	public GraphQL graphQL() {
+		return graphQL;
 	}
 
-	private DataFetcher<JsonObject> createProject() {
-		return (e) -> {
-			// Only maps are allowed for inputs
-			// https://stackoverflow.com/questions/54257346/graphql-use-input-type-to-search-data
-			Map<String, Object> input = e.getArgument("input");
-			return Json.createObjectBuilder().add("name", (String) input.get("name")).build();
-
-		};
-	}
-
-	private TypeResolver fileType() {
-		return (e) -> {
-			return e.getSchema().getObjectType("ProjectsFile");
-		};
-	}
+//	public void invokeWireBuilder(ModuleInstance<?> module, Builder runtimeWiringBuilder) {
+//		try {
+//			Util.invoke(module.getModule(), module.getModule().getClass(), new AnnotationFilter(GraphQLWire.class),
+//					(args, types) -> {
+//						for (int i = 0; i < args.length; i++) {
+//							if (Builder.class.equals(types[i])) {
+//								args[i] = runtimeWiringBuilder;
+//							}
+//						}
+//					});
+//		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+//			LOG.log(Level.SEVERE, "", e);
+//		}
+//
+//	}
 
 	public static final GraphQLScalarType DATE = GraphQLScalarType.newScalar().name("Date")
 			.coercing(new Coercing<String, String>() {

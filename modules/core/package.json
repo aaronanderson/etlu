@@ -16,6 +16,7 @@
     "@babylonjs/gui": "^4.1.0",
     "@babylonjs/loaders": "^4.1.0",
     "@babylonjs/materials": "^4.1.0",
+    "@workday/canvas-system-icons-web": "^1.0.39",
     "ecsy": "^0.4.1"
   },
   "devDependencies": {

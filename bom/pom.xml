@@ -79,6 +79,12 @@
 				<artifactId>avro</artifactId>
 				<version>${avro.version}</version>
 			</dependency>
+			
+			<dependency>
+				<groupId>org.apache.avro</groupId>
+				<artifactId>avro-compiler</artifactId>
+				<version>${avro.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.apache.ignite</groupId>

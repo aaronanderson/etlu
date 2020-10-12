@@ -2,6 +2,7 @@ package com.github.aaronanderson.etlu.runtime.spi;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;

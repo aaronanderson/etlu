@@ -12,7 +12,7 @@ import { AbstractMesh } from '@babylonjs/core/Meshes/abstractMesh';
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial"
 import { Nullable } from '@babylonjs/core/types';
 import { OperationRoom } from '../components/OperationRoom';
-import { ETLUSystem, vrIcon } from './ETLUSystem';
+import { ETLUSystem } from './ETLUSystem';
 import { Room } from '../components/Room';
 import { PointerEventTypes } from '@babylonjs/core/Events/pointerEvents';
 import { AssetContainer } from '@babylonjs/core/assetContainer';
@@ -20,7 +20,6 @@ import { ActionManager } from '@babylonjs/core/Actions/actionManager';
 import { ExecuteCodeAction } from '@babylonjs/core/Actions/directActions';
 import { Texture } from "@babylonjs/core/Materials/Textures/texture";
 
-import { AdvancedDynamicTexture, Grid, Rectangle, Control, TextBlock, Button  } from '@babylonjs/gui/2D';
 
 export class OperationSystem extends System {
 
@@ -163,82 +162,7 @@ export class OperationSystem extends System {
         //assetContainer.materials.push(container.materials);
 });
 
- var guiPlane = MeshBuilder.CreatePlane("guiPlane", {width: 1, height: 3}, scene);
- scene.removeMesh(guiPlane);
- assetContainer.meshes.push(guiPlane);
- guiPlane.position.x = 1.75;
- guiPlane.position.y = 0;
- guiPlane.position.z = 5;
- guiPlane.parent = camera;
 
- const advancedTexture2 = AdvancedDynamicTexture.CreateForMesh(
-   guiPlane,
-   1024,
-   1024,
-   false
- );
-
-let grid = new Grid();
-//grid.addColumnDefinition(100, true);
-grid.addColumnDefinition(0.5);
-grid.addColumnDefinition(0.5);
-//grid.addColumnDefinition(100, true);
-grid.addRowDefinition(0.25);
-grid.addRowDefinition(0.25);
-grid.addRowDefinition(0.25);
-grid.addRowDefinition(0.25);
-
-let rect = new Rectangle("Test1");
-rect.background = "green";
-rect.thickness = 0;
-grid.addControl(rect, 0, 0);
-
-  // let dlTexture = new Texture('core/assets/wd-icon-download.svg', scene, false, false);
-  // dlTexture.hasAlpha = true;
-  // scene.removeTexture(dlTexture);
-  // assetContainer.textures.push(dlTexture);
-
-
-const svgFilePath = 'https://design.workdaycdn.com/beta/assets/web-icons/system@0.11.16/svg/wd-icon-x.svg';
-const parser = new DOMParser();
-const serializer = new XMLSerializer();
-  // Fetch the file from the server.
-  fetch(svgFilePath)
-    .then(response => response.text())
-    .then(text => {
-      const parsed = parser.parseFromString(text, 'text/html');
-      const svg = parsed.querySelector('svg');
-      svg.setAttribute("fill","red");
-      const s = serializer.serializeToString(svg);
-      const svgURI = "data:image/svg+xml;base64," + window.btoa(s);
-      console.log("svg",svg, svgURI);
-      let testButton = Button.CreateImageWithCenterTextButton(
-        "but",
-        "Click Me",
-        svgURI
-      );
-      grid.addControl(testButton, 0, 0);
-    });
-
-
-
-rect = new Rectangle("Test2");
-rect.background = "blue";
-rect.thickness = 0;
-grid.addControl(rect, 0, 1);
-
-
-rect = new Rectangle("Test3");
-rect.background = "red";
-rect.thickness = 0;
-grid.addControl(rect, 1, 0);
-
-rect = new Rectangle("Test4");
-rect.background = "purple";
-rect.thickness = 0;
-grid.addControl(rect, 1, 1);
-
-advancedTexture2.addControl(grid);
 
 // panel.blockLayout = true;
 // for (var index = 0; index < 30; index++) {

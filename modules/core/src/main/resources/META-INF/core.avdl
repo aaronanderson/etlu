@@ -1,0 +1,39 @@
+@namespace("etlu.core")
+protocol CoreProtocol {
+
+record Project {
+    string id;
+    string name;
+    string etype ="project";
+    array<string> campaignIds;
+ }
+ 
+ record Campaign {
+ 	string id;
+    string name;
+    string etype ="room";
+    string startActionId;
+ }
+ 
+ record Action {
+ 	string id;
+    string name;
+    string activityId;
+    array<string> nextActionIds;
+    
+ }
+ 
+ record TransformActivity {
+ 	string id;
+    string name;
+    string etype ="activity";
+ }
+ 
+ record CacheStore {
+ 	string id;
+    string name;
+    string etype ="store";
+ }
+ 
+ 
+}

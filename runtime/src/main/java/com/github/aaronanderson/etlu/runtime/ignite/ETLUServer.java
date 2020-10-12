@@ -8,6 +8,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.enterprise.event.Event;
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCluster;
 import org.apache.ignite.IgniteException;
@@ -24,7 +28,8 @@ import org.apache.ignite.spi.communication.tcp.TcpCommunicationSpi;
 import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi;
 import org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder;
 
-import com.github.aaronanderson.etlu.runtime.ignite.task.ConfigurationCreate;
+import com.github.aaronanderson.etlu.runtime.spi.StartEvent;
+import com.github.aaronanderson.etlu.runtime.spi.StopEvent;
 
 public class ETLUServer implements LifecycleBean {
 
@@ -38,6 +43,15 @@ public class ETLUServer implements LifecycleBean {
 
 	@IgniteInstanceResource
 	protected Ignite ignite;
+
+	@Inject
+	Event<IgniteConfiguration> configurationEvent;
+
+	@Inject
+	Event<StartEvent> startEvent;
+
+	@Inject
+	Event<StopEvent> stopEvent;
 
 	protected void start(String homePath, String instanceName) {
 
@@ -106,6 +120,8 @@ public class ETLUServer implements LifecycleBean {
 
 		configure(igniteConfig);
 
+		configurationEvent.fire(igniteConfig);
+
 		Ignition.start(igniteConfig);
 		IgniteCluster igniteCluster = ignite.cluster();
 		igniteCluster.active(true);
@@ -113,10 +129,7 @@ public class ETLUServer implements LifecycleBean {
 		Collection<ClusterNode> nodes = ignite.cluster().forServers().nodes();
 		ignite.cluster().setBaselineTopology(nodes);
 
-		if (!ignite.cacheNames().contains("configuration")) {
-			ignite.compute().call(new ConfigurationCreate());
-		}
-
+		startEvent.fire(new StartEvent(ignite));
 	}
 
 	protected void configure(IgniteConfiguration igniteConfig) {
@@ -133,6 +146,7 @@ public class ETLUServer implements LifecycleBean {
 	}
 
 	protected void stop() {
+		stopEvent.fire(new StopEvent(ignite));
 		if (ignite != null) {
 			ignite.close();
 		}
