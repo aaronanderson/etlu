@@ -2,7 +2,7 @@ import { World, System, Attributes } from 'ecsy';
 import { ETLUSystem } from './ETLUSystem';
 import { AssetContainer } from '@babylonjs/core/assetContainer';
 import { MeshBuilder } from "@babylonjs/core/Meshes/meshBuilder";
-import { AdvancedDynamicTexture, Grid, Rectangle, Control, TextBlock, Button  } from '@babylonjs/gui/2D';
+import { AdvancedDynamicTexture, Grid, Rectangle, Control, TextBlock, Button, TextWrapping  } from '@babylonjs/gui/2D';
 import {svgIcon} from '../util/svg';
 import xIcon from '@workday/canvas-system-icons-web/dist/svg/wd-icon-x.svg';
 import growIcon from '@workday/canvas-system-icons-web/dist/svg/wd-icon-grow.svg';
@@ -17,7 +17,7 @@ export class ControlPanelSystem extends System {
     let assetContainer = new AssetContainer(scene);
 
 
-    const guiPlane = MeshBuilder.CreatePlane("guiPlane", {width: 1, height: 3}, scene);
+    const guiPlane = MeshBuilder.CreatePlane("guiPlane" ,{width: 1, height: 2}, scene); //
     scene.removeMesh(guiPlane);
     assetContainer.meshes.push(guiPlane);
     guiPlane.position.x = 1.75;
@@ -25,17 +25,17 @@ export class ControlPanelSystem extends System {
     guiPlane.position.z = 5;
     guiPlane.parent = camera;
 
-    const advancedTexture2 = AdvancedDynamicTexture.CreateForMesh(guiPlane);
+    const advancedTexture2 = AdvancedDynamicTexture.CreateForMesh(guiPlane);//,1024, 1024
 
    let grid = new Grid();
-   grid.addColumnDefinition(100, true);
-   grid.addColumnDefinition(1);
-   grid.addColumnDefinition(100, true);
+   grid.addColumnDefinition(.15);
+   grid.addColumnDefinition(.7);
+   grid.addColumnDefinition(.15);
    //grid.addColumnDefinition(0.5);
    //grid.addColumnDefinition(0.5);
    //grid.addRowDefinition(0.25);
-   grid.addRowDefinition(50,true);
-   grid.addRowDefinition(150,true);
+   grid.addRowDefinition(.1);
+   grid.addRowDefinition(.15);
    grid.addRowDefinition(.75);
 
 
@@ -52,8 +52,13 @@ export class ControlPanelSystem extends System {
        "Click Me",
        xIconURI
      );
+     testButton.width = "50%";
+     //testButton.image.width = "50%";
+     testButton.stretch = Image.STRETCH_UNIFORM;
      testButton.textBlock.textVerticalAlignment =   Control.VERTICAL_ALIGNMENT_BOTTOM;
      testButton.textBlock.fontSize=50;
+     //testButton.textBlock.textWrapping = TextWrapping.WordWrap;
+
      grid.addControl(testButton, 1, 1);
 
    }) ;
@@ -63,6 +68,9 @@ export class ControlPanelSystem extends System {
        "but",
        xIconURI
      );
+
+     testButton.stretch = Image.STRETCH_UNIFORM;
+     //testButton.image.stretch = Image.STRETCH_UNIFORM;
      grid.addControl(testButton, 0, 2);
 
    }) ;

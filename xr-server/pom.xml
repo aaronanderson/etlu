@@ -12,6 +12,11 @@
 	<artifactId>etlu-xr-server</artifactId>
 	<name>ETL Universe - XR Server</name>
 
+	<properties>
+		<quarkus.version>1.10.5.Final</quarkus.version>
+	</properties>
+
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -21,12 +26,16 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>io.quarkus</groupId>
+				<artifactId>quarkus-bom</artifactId>
+				<version>${quarkus.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
-	<properties>
-		<quarkus.version>1.8.1.Final</quarkus.version>
-	</properties>
 
 	<dependencies>
 
@@ -35,12 +44,12 @@
 			<artifactId>etlu-runtime</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>io.github.aaronanderson</groupId>
 			<artifactId>etlu-core</artifactId>
 			<version>${project.version}</version>
-		</dependency> 
+		</dependency>
 
 		<dependency>
 			<groupId>io.github.aaronanderson</groupId>
@@ -72,14 +81,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-multipart-provider</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>io.smallrye.config</groupId>
-					<artifactId>smallrye-config</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-resteasy-multipart</artifactId>
 		</dependency>
 
 		<dependency>
@@ -145,7 +148,7 @@
 					</systemProperties>
 				</configuration>
 			</plugin>
-			
+
 		</plugins>
 
 

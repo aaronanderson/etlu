@@ -3,7 +3,7 @@ const sass = require('sass')
 
 module.exports = function (snowpackConfig, pluginOptions) {
   return {
-    name: 'lit-css-plugin',
+    name: 'lit-scss-plugin',
     resolve: {
       input: ['.scss'],
       output: ['.js'],
