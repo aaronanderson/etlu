@@ -9,6 +9,7 @@ node_modules/
 web_modules/
 node/
 dist/
+build/
 storybook-static
 xr-server/src/main/resources/META-INF/resources
 xr-server/etlu

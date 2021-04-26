@@ -1,6 +1,7 @@
 package com.github.aaronanderson.etlu.xrserver;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.UncheckedIOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -98,16 +99,17 @@ public class WebServer {
 					jsonWriter.writeObject(tsConfigJson);
 				}
 
-				JsonObject snowPackJson = Json
-						.createReader(Files.newBufferedReader(basePath.resolve("snowpack.config.json"))).readObject();
+				String snowpackJS = Files.readString(basePath.resolve("snowpack.config.js"));
+				int snowpackJSStart = snowpackJS.indexOf("=");
+				int snowpackJSEnd = snowpackJS.lastIndexOf(";");
+				
+				JsonObject snowPackJson = Json.createReader(new StringReader(snowpackJS.substring(snowpackJSStart + 1, snowpackJSEnd)))
+						.readObject();
 				snowPackJson = patchBuilder.remove("/mount/src~1main~1web").add("/mount/src", "/")
-						.replace("/devOptions/out", "./build").build().apply(snowPackJson);
+						.replace("/buildOptions/out", "./build").build().apply(snowPackJson);
 
-				try (JsonWriter jsonWriter = writerFactory
-						.createWriter(Files.newBufferedWriter(devPath.resolve("snowpack.config.json"),
-								StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING));) {
-					jsonWriter.writeObject(snowPackJson);
-				}
+				Files.writeString(devPath.resolve("snowpack.config.js"), String.format("%s = %s;", snowpackJS.substring(0, snowpackJSStart), snowPackJson),
+						StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);	
 
 				Files.copy(basePath.resolve("lit-scss-plugin.js"), devPath.resolve("lit-scss-plugin.js"),
 						StandardCopyOption.REPLACE_EXISTING);

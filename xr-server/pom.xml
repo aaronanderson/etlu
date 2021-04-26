@@ -13,7 +13,7 @@
 	<name>ETL Universe - XR Server</name>
 
 	<properties>
-		<quarkus.version>1.10.5.Final</quarkus.version>
+		<quarkus.version>1.13.2.Final</quarkus.version>
 	</properties>
 
 
@@ -139,6 +139,9 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>				
+					<jvmArgs>-Xms512m -Xmx512m -Djava.net.preferIPv4Stack=true --add-exports=java.base/jdk.internal.misc=ALL-UNNAMED --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-exports=java.management/com.sun.jmx.mbeanserver=ALL-UNNAMED --add-exports=jdk.internal.jvmstat/sun.jvmstat.monitor=ALL-UNNAMED --add-exports=java.base/sun.reflect.generics.reflectiveObjects=ALL-UNNAMED --add-opens=jdk.management/com.sun.management.internal=ALL-UNNAMED --illegal-access=permit</jvmArgs>
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>

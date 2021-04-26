@@ -38,6 +38,7 @@ export class WebXRPageElement extends ViewElement {
 		this.pageTitle = 'WebXR Portal';
     let xrEvent = new CustomEvent("etlu-xr-init",{detail: {canvas: this.canvas}});
 		document.dispatchEvent(xrEvent);
+		console.log("xr init dispatched");
 
 	}
 

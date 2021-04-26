@@ -52,6 +52,8 @@ Access the application [http://localhost:8080/](http://localhost:8080/)
 
 ## Build Instructions
 
+Apache Ignite only supports LTS releases. JDK 15 is currently unsupported but JDK 14 works.
+
 run `mvn clean install`
 
 ### Quarkus Development
@@ -66,11 +68,12 @@ From the server directory Start the Quarkus server in development mode by runnin
 
 ### Webpack Development
 
-From the server directory start the Quarkus server in development mode by running `mvn quarkus:dev -Dquarkus.http.port=5000`
+From the xr-server directory start the Quarkus server in development mode by running `mvn quarkus:dev -Dquarkus.http.port=5000`
 
 In the web directory install all dependencies and start the Webpack development server
 
 ```
+cd target/dev-server
 yarn install
 yarn start
 ```

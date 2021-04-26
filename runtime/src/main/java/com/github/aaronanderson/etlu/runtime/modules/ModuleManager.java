@@ -76,11 +76,11 @@ public class ModuleManager {
 	@PreDestroy
 	public void destroy() {
 		for (ModuleInstance<?> moduleInstance : moduleInstances) {
-			if (moduleInstance.getFileSystem() != null) {
+			if (moduleInstance.getFileSystem() != null && moduleInstance.getFileSystem().isOpen()) {
 				try {
 					moduleInstance.getFileSystem().close();
 				} catch (NoSuchFileException e) {
-					
+
 				} catch (Exception e) {
 					LOG.log(Level.SEVERE, "", e);
 

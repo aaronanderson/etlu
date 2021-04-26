@@ -2,6 +2,6 @@
 open module com.github.aaronanderson.etlu.excel {
 
 	requires com.github.aaronanderson.etlu.runtime;
-	requires poi; 
+	requires org.apache.poi.poi; 
 	
 }

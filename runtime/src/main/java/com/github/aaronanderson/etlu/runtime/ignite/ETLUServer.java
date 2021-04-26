@@ -18,6 +18,7 @@ import org.apache.ignite.IgniteException;
 import org.apache.ignite.IgniteSystemProperties;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.cluster.ClusterNode;
+import org.apache.ignite.cluster.ClusterState;
 import org.apache.ignite.configuration.ConnectorConfiguration;
 import org.apache.ignite.configuration.DataStorageConfiguration;
 import org.apache.ignite.configuration.IgniteConfiguration;
@@ -57,10 +58,12 @@ public class ETLUServer implements LifecycleBean {
 
 		IgniteConfiguration igniteConfig = new IgniteConfiguration();
 		igniteConfig.setClientMode(false);
+		igniteConfig.setConsistentId("ETLU");
 
 		System.setProperty(IgniteSystemProperties.IGNITE_QUIET, "true");
 		System.setProperty(IgniteSystemProperties.IGNITE_NO_ASCII, "true");
 		System.setProperty(IgniteSystemProperties.IGNITE_PERFORMANCE_SUGGESTIONS_DISABLED, "true");
+
 		// -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager should be
 		// set as a JVM option to ensure OWB logging is handled by log4j2
 
@@ -96,21 +99,20 @@ public class ETLUServer implements LifecycleBean {
 				.collect(Collectors.toList()));
 		commSpi.setLocalPort(DEFAULT_COM_PORT);
 		commSpi.setLocalPortRange(DEFAULT_PORT_RANGE);
+		commSpi.setMessageQueueLimit(1024);
 		conConfig.setHost(DEFAULT_HOST);
 		conConfig.setPort(DEFAULT_CONNECTOR_PORT);
 		conConfig.setPortRange(DEFAULT_PORT_RANGE);
 
 		// Applying settings.
 		// igniteConfig.setPluginConfigurations(pluginCfgs);
-		// Enable peer class loading for now until REST task script deployment
-		// available. Client classes will be sent to server.
-		igniteConfig.setPeerClassLoadingEnabled(true);
-		igniteConfig.setActiveOnStart(true).setAutoActivationEnabled(true)
+		igniteConfig.setPeerClassLoadingEnabled(false);
+		igniteConfig.setClusterStateOnStart(ClusterState.ACTIVE)
 				// .setGridLogger(log)
 				.setUserAttributes(attrs).setWorkDirectory(home.resolve("work").toAbsolutePath().toString());
 
 		igniteConfig.setIgniteInstanceName(instanceName);
-
+		igniteConfig.setMetricsLogFrequency(0);
 		// Tenant service is automatically enabled on all nodes
 		// CacheConfiguration tenantCacheCfg = new CacheConfiguration("Tenant");
 		// tenantCacheCfg.setCacheMode(CacheMode.REPLICATED);

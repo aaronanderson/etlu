@@ -37,7 +37,6 @@ const menu = [{ title: "Portal", icon: homeIcon, path: "/" }, { title: "Connecti
 //{ title: "Template Archive", icon: dataInputIcon, path: "/archive-template" }, { title: "Template Load", icon: uploadCloudIcon, path: "/load-template" }, { title: "Transform", icon: configureIcon, path: "/transform" }, { title: "Utilities", icon: toolsIcon, path: "/utilities" }];
 
 
-
 @customElement('etlu-app')
 export class AppElement extends LitElement {
 
@@ -46,6 +45,7 @@ export class AppElement extends LitElement {
 
 
   firstUpdated() {
+	
     if (this.shadowRoot) {
 
       let mainContent: HTMLElement = this.shadowRoot.getElementById('main-content') as HTMLElement;
@@ -65,6 +65,8 @@ export class AppElement extends LitElement {
     }
 
   }
+
+  
 
 
   static get styles() {

@@ -12,13 +12,13 @@ import { ProjectState } from '../features/project/project-actions';
 
 import { openDB } from "idb";
 
-export const intworkspaceDB = () => {
+export const etluDB = () => {
 	return openDB("etluDB", 1, {
 		upgrade(db, oldVersion) {
 			if (oldVersion == 0) {
-				let datamaskStore = db.createObjectStore('extract-datamasks', { keyPath: ['connectionId', 'dataMaskKey'] });
+				let datamaskStore = db.createObjectStore('preferences', { keyPath: ['preferenceId'] });
 				datamaskStore.createIndex("lastModified", "lastModified", { unique: false });
-				db.createObjectStore('load-tenant');
+				db.createObjectStore('etlu');
 			}
 		},
 	});

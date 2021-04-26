@@ -6,7 +6,7 @@ open module com.github.aaronanderson.etlu.runtime {
 	requires transitive jakarta.enterprise.cdi.api;
 	requires transitive jakarta.inject.api;
 	requires transitive java.annotation;
-	requires transitive graphql.java;
+	requires transitive com.graphqljava;
 	requires transitive org.apache.avro;
 	requires transitive org.apache.avro.compiler;
 	requires java.logging;
